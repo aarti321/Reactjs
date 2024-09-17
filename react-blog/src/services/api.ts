@@ -1,11 +1,16 @@
-const API_BASE_URL = 'http://localhost:8000/api';
-
-export const fetchBlogPosts = async () => {
-  const response = await fetch(`${API_BASE_URL}/posts`);
-  return response.json();
+export const fetchBlogPosts = async (): Promise<{ id: string; title: string }[]> => {
+  const response = await fetch('/api/posts');
+  if (!response.ok) {
+    throw new Error('Network response was not ok');
+  }
+  return response.json(); // Make sure the data matches { id: string; title: string }[]
 };
 
-export const fetchBlogPost = async (id: string) => {
-  const response = await fetch(`${API_BASE_URL}/posts/${id}`);
+// If `fetchBlogPost` is also used, ensure it matches the expected type
+export const fetchBlogPost = async (id: string): Promise<{ title: string; content: string }> => {
+  const response = await fetch(`/api/posts/${id}`);
+  if (!response.ok) {
+    throw new Error('Network response was not ok');
+  }
   return response.json();
 };

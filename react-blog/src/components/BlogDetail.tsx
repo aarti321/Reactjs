@@ -1,19 +1,24 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
+import './BlogDetail.css';
+
+// Assuming fetchBlogPost is defined in your `api.ts` or similar file
 import { fetchBlogPost } from '../services/api';
 
 interface BlogPost {
-  id: number;
   title: string;
   content: string;
 }
 
 const BlogDetail: React.FC = () => {
-  const { id } = useParams<{ id: string }>();
+  const { id } = useParams<{ id: string }>(); // Get the blog post ID from the route
   const [post, setPost] = useState<BlogPost | null>(null);
 
   useEffect(() => {
-    fetchBlogPost(id).then(data => setPost(data));
+    if (id) {
+      // Fetch the blog post based on the ID
+      fetchBlogPost(id).then(data => setPost(data)).catch(error => console.error('Error fetching blog post:', error));
+    }
   }, [id]);
 
   if (!post) {

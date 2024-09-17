@@ -1,15 +1,15 @@
 import React from 'react';
-import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import BlogList from './components/BlogList';
 import BlogDetail from './components/BlogDetail';
 
-const App: React.FC = () => {
+const App = () => {
   return (
     <Router>
-      <Switch>
-        <Route path="/" exact component={BlogList} />
-        <Route path="/posts/:id" component={BlogDetail} />
-      </Switch>
+      <Routes>
+        <Route path="/" element={<BlogList />} />
+        <Route path="/posts/:id" element={<BlogDetail />} />
+      </Routes>
     </Router>
   );
 };

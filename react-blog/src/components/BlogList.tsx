@@ -1,18 +1,19 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { Link } from 'react-router-dom';
+import './BlogList.css';
 import { fetchBlogPosts } from '../services/api';
 
+// Update the BlogPost type to match the returned data
 interface BlogPost {
-  id: number;
+  id: string;
   title: string;
-  content: string;
 }
 
 const BlogList: React.FC = () => {
-  const [posts, setPosts] = useState<BlogPost[]>([]);
+  const [posts, setPosts] = React.useState<BlogPost[]>([]);
 
-  useEffect(() => {
-    fetchBlogPosts().then(data => setPosts(data));
+  React.useEffect(() => {
+    fetchBlogPosts().then(data => setPosts(data)).catch(error => console.error('Error fetching blog posts:', error));
   }, []);
 
   return (

@@ -1,34 +1,59 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { useParams } from 'react-router-dom';
-import './BlogDetail.css';
+import './BlogDetail.css'; // Optional: Create this CSS file for styling
+import { fetchBlogPostById } from '../services/api';
 
-// Assuming fetchBlogPost is defined in your `api.ts` or similar file
-import { fetchBlogPost } from '../services/api';
-
+// Define the BlogPost interface
 interface BlogPost {
+  _id: string;
   title: string;
-  content: string;
+  content: string;  // This time content is required, since it's a detailed view
 }
 
 const BlogDetail: React.FC = () => {
-  const { id } = useParams<{ id: string }>(); // Get the blog post ID from the route
-  const [post, setPost] = useState<BlogPost | null>(null);
+  const { id } = useParams<{ id: string }>(); // Get post id from the route parameters
+  const [post, setPost] = React.useState<BlogPost | null>(null);
+  const [loading, setLoading] = React.useState<boolean>(true);
+  const [error, setError] = React.useState<string | null>(null);
 
-  useEffect(() => {
+  React.useEffect(() => {
+    // Ensure that id is not undefined before making the API call
     if (id) {
-      // Fetch the blog post based on the ID
-      fetchBlogPost(id).then(data => setPost(data)).catch(error => console.error('Error fetching blog post:', error));
+      fetchBlogPostById(id)  // Since id is guaranteed to be a string, this works fine
+        .then(data => {
+          setPost(data);
+          setLoading(false);
+        })
+        .catch(error => {
+          console.error(`Error fetching blog post with id ${id}:`, error);
+          setError('Failed to fetch the blog post.');
+          setLoading(false);
+        });
+    } else {
+      setError('No blog post ID provided.');
+      setLoading(false);
     }
   }, [id]);
 
+  // Handle loading and error states
+  if (loading) {
+    return <p>Loading blog post...</p>;
+  }
+
+  if (error) {
+    return <p>{error}</p>;
+  }
+
   if (!post) {
-    return <div>Loading...</div>;
+    return <p>Blog post not found.</p>; // In case no post is returned
   }
 
   return (
     <div className="blog-detail">
       <h1>{post.title}</h1>
-      <p>{post.content}</p>
+      <div className="blog-content">
+        <p>{post.content}</p>
+      </div>
     </div>
   );
 };

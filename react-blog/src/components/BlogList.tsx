@@ -1,11 +1,11 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import './BlogList.css';
+import './BlogList.css'; // Make sure to add styling for the table
 import { fetchBlogPosts } from '../services/api';
 
 // Define the BlogPost interface
 interface BlogPost {
-  _id: string;         // Assuming id is a number (adjust if it's a string)
+  _id: string;         // MongoDB ObjectId as a string
   title: string;
   content?: string;   // Optional content field
 }
@@ -21,7 +21,7 @@ const BlogList: React.FC = () => {
       .then(data => {
         // Ensure every post has a content field, even if it's missing from the API
         const postsWithContent = data.map((post: { _id: string; title: string; content?: string }) => ({
-          _id: post._id,      // Ensure id is a number (or leave as string if needed)
+          _id: post._id,
           title: post.title,
           content: post.content || '' // Provide an empty string if content is missing
         }));
@@ -47,17 +47,28 @@ const BlogList: React.FC = () => {
   return (
     <div className="blog-list">
       <h1>Blog Posts</h1>
-      <ul>
-        {posts.length > 0 ? (
-          posts.map(post => (
-            <li key={post._id}>
-              <Link to={`/posts/${post._id}`}>{post.title}</Link>
-            </li>
-          ))
-        ) : (
-          <p>No blog posts available.</p>
-        )}
-      </ul>
+      {posts.length > 0 ? (
+        <table>
+          <thead>
+            <tr>
+              <th>Title</th>
+              <th>View</th>
+            </tr>
+          </thead>
+          <tbody>
+            {posts.map(post => (
+              <tr key={post._id}>
+                <td>{post.title}</td>
+                <td>
+                  <Link to={`/posts/${post._id}`} className="view-link">View</Link>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      ) : (
+        <p>No blog posts available.</p>
+      )}
     </div>
   );
 };

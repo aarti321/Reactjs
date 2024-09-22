@@ -44,21 +44,21 @@ You don’t have to ever use `eject`. The curated feature set is suitable for sm
 ### Steps to Setup and Run the Frontend:
 
 1. **Clone the ReactJS repository**:
-    ```bash
+    
     git clone https://github.com/aarti321/Reactjs.git
     cd react-blog-app
-    ```
+    
 
 2. **Install dependencies**:
-    ```bash
+    
     npm install
-    ```
+    
 
 
 3. **Run the React development server**:
-    ```bash
+    
     npm start
-    ```
+   
 
 The frontend will now be running on `http://localhost:3000`.
 

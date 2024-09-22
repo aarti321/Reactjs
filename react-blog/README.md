@@ -76,3 +76,4 @@ The frontend will now be running on `http://localhost:3000`.
 
 - **Cross-Origin Resource Sharing (CORS)**: Configured CORS in Laravel to allow communication between the frontend and backend.
 - **Data Fetching**: Handled API calls using `axios` and managed state with React
+
